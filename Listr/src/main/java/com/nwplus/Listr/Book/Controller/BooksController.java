@@ -24,4 +24,11 @@ public class BooksController {
 				.body(bookService.searchBookByName(title));
 	}
 	
+	@GetMapping("/coverByIsbn/{isbn}")
+	public ResponseEntity<String> getCoverByIsbn(@PathVariable String isbn) {
+		return ResponseEntity.ok()
+				.contentType(MediaType.TEXT_PLAIN)
+				.body(bookService.createIsbnUrl(isbn));
+	}
+	
 }

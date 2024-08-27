@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.util.UriEncoder;
 
 import com.nwplus.Listr.Book.Converters.BookResponseConverter;
-import com.nwplus.Listr.Book.Data.Book;
 import com.nwplus.Listr.Book.Data.BookResponse;
 
 @Service
@@ -31,8 +30,13 @@ public class BookService{
 		return responseConverter.convertToBookResponse(response);
 	}
 	
-	private Book withImageUrl(Book book) {
-		return book.withCoverImageURL(OPEN_API_COVER_ISBN + book.isbn().getFirst() + "-M.jpg");
+	/**
+	 * 
+	 * @param isbn
+	 * @return
+	 */
+	public String createIsbnUrl(String isbn) {
+		return OPEN_API_COVER_ISBN.concat(isbn).concat("-M.jpg");
 	}
 
 	/**
@@ -51,8 +55,11 @@ public class BookService{
 			response = client.send(request, HttpResponse.BodyHandlers.ofString());
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			client.close();
 		}
 		
 		return response;
 	}
+
 }
